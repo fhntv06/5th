@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список автомобилей</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="main">
+        <h1>Список автомобилей</h1>
+        <div class="search__form">
+            <input type="text" id="search__input" placeholder="Марка / Модель">
+            <button class="search__button" id="search__button">
+                <span>Найти&#128270;</span>
+            </button>
+        </div>
+        <h2>Добавить запись</h2>
+        <p style="text-align: right; color: #757575; font-size: 12px;">* обязательное поле</p>
+        <div class="container">
+            <input class="container__input" type="text" placeholder="Введите марку *" maxlength="10" >
+            <input class="container__input" type="text" placeholder="Введите модель *" maxlength="10" >
+            <input class="container__input" type="text" placeholder="Введите цвет *" maxlength="30" >
+            <input class="container__input" type="text" placeholder="Введите количество *" maxlength="5" onKeyPress ="if ((event.keyCode < 48) || (event.keyCode > 57)){alert('Не понятно, что цифры надо вводить(без побелов)?');}">
+            <input class="container__input" type="text" placeholder="Введите цену *" maxlength="9" onKeyPress ="if ((event.keyCode < 48) || (event.keyCode > 57)){alert('Не понятно, что цифры надо вводить(без побелов)?');}">
+            <button id="container__button__add" class="button__blue">Добавить</button>
+        </div>
+        <h2>Сортировка</h2>
+        <div class="container">
+            <div class="select">
+                <button class="button__content">
+                    <span class="button__text">
+                        <span>Марка</span>
+                    </span> 
+                    <span>&#8595;</span>    
+                </button>
+                <div class="select__items select__brand">
+                    <div class="select__items"></div>
+                </div>
+            </div>
+            
+            <div class="select disabel">
+                <button class="button__content">
+                    <span class="button__text">
+                        <span>Модель</span>
+                    </span>     
+                    <span>&#8595;</span>
+                </button>
+                <div class="select__items select__model">
+            		<div class="select__items"></div>
+            	</div>
+            </div>
+            <div class="select">
+                <button class="button__content">
+                    <span class="button__text">
+                        <span>Цвет</span>
+                    </span> 
+                    <span>&#8595;</span>    
+                </button>
+                 <div class="select__items select__color"></div>
+            </div>
+            <div class="select">
+                <button class="button__content">
+                    <span class="button__text">
+                        <span>Количество</span>
+                    </span> 
+                    <span>&#8595;</span>    
+                </button>
+                <div class="select__items">
+            		<div class="select__item" style="justify-content: space-between;" onclick="sortVolumeUp()">
+            			<span>По возрастанию</span> 
+            			<span>&#8593;</span>   
+            		</div>
+                	<div class="select__item" style="justify-content: space-between;" onclick="sortVolumeDown()">
+                		<span>По убыванию</span> 
+                		<span>&#8595;</span>   
+               		</div>
+                    
+            	</div>
+            </div>
+            <div class="select">
+                <button class="button__content">
+                    <span class="button__text">
+						<span>Цена</span>
+                    </span>
+                    <span>&#8595;</span>
+                </button>
+            	<div class="select__items">
+                	<div class="select__item" style="justify-content: space-between;" onclick="sortPriceUp()">
+                		<span >По возрастанию</span> 
+            			<span>&#8593;</span>   
+                	</div>
+                	<div class="select__item" style="justify-content: space-between;" onclick="sortPriceDown()">
+                		<span >По убыванию</span> 
+            			<span>&#8595;</span>   
+                	</div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Автомобили</h2>
+        <div class="container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Марка</th>
+                        <th>Модель</th>
+                        <th>Цвет</th>
+                        <th>Количество</th>
+                        <th>Цена</th>
+                        <th>edit</th>
+                        <th>delete</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+            </table>
+        </div>
+        <ul class="pagination"></ul>
+        
+    </div>
+
+    <!-- окно Редактирования -->
+    <div class="modal modal__edit">
+        <div class="modal__content modal__content__edit">
+            <h2 class="modal__heading">Редактирование строки</h2>
+            <div class="container">
+                <input class="container__input" type="text" placeholder="Введите марку *" maxlength="10">
+                <input class="container__input" type="text" placeholder="Введите модель *" maxlength="10">
+                <input class="container__input" type="text" placeholder="Введите цвет *" maxlength="30">
+                <input class="container__input" type="text" placeholder="Введите количество *" maxlength="5" onKeyPress ="if ((event.keyCode < 48) || (event.keyCode > 57)){alert('Не понятно, что цифры надо вводить(без побелов)?');}">
+                <input class="container__input" type="text" placeholder="Введите цену *" maxlength="9" onKeyPress ="if ((event.keyCode < 48) || (event.keyCode > 57)){alert('Не понятно, что цифры надо вводить(без побелов)?');}">
+                <div class="button__group">
+                    <button type="submit" class="button__blue edit__button" onclick="editRow()">Редактировать</button>
+                    <button id="button__close" class="button__blue" onclick="hideModalEdit()">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- окно Удаления -->
+   <!--  <div class="modal modal__delete">
+        <div class="modal__content">
+            <h2 class="modal__heading">Удалить строку?</h2>
+            <div class="modal__button-group">
+                <button class="modal__button button__blue">Да!</button>
+                <button class="modal__button button__blue" onclick="hideModalDelete()">Нет</button>
+            </div>
+        </div>
+    </div> -->
+
+    <script src="main.js"></script>
+</body>
+</html>
